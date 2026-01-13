@@ -1,77 +1,88 @@
-import { Briefcase, Calendar } from "lucide-react"
-import { Card, CardContent } from "@/components/ui/card"
+import { Briefcase, Calendar, MapPin } from "lucide-react"
 
 const experiences = [
   {
     title: "IT Support Intern",
     company: "The University of Cambodia",
+    location: "Phnom Penh",
     duration: "3 Months",
-    description:
-      "Provided technical support to staff and students, troubleshot hardware and software issues, and maintained IT infrastructure.",
+    description: [
+      "Provided technical support to staff and students",
+      "Troubleshot hardware and software issues",
+      "Maintained IT infrastructure and equipment",
+      "Assisted in network administration tasks",
+    ],
   },
   {
     title: "Employee",
     company: "DDD Company",
+    location: "Cambodia",
     duration: "1+ Year",
-    description: "Gained valuable professional experience and developed technical skills in a corporate environment.",
+    description: [
+      "Gained valuable professional experience",
+      "Developed technical skills in a corporate environment",
+      "Collaborated with team members on various projects",
+      "Enhanced problem-solving abilities",
+    ],
   },
   {
-    title: "Grab Food Delivery Partner",
+    title: "Food Delivery Partner",
     company: "Grab Cambodia",
+    location: "Cambodia",
     duration: "Ongoing",
-    description:
-      "Developed strong time management, customer service, and navigation skills while working independently.",
+    description: [
+      "Developed strong time management skills",
+      "Enhanced customer service abilities",
+      "Improved navigation and route optimization",
+      "Maintained high customer satisfaction ratings",
+    ],
   },
 ]
 
 export function ExperienceSection() {
   return (
-    <section id="experience" className="py-20">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
-            Work <span className="text-accent">Experience</span>
-          </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Professional experiences that have shaped my skills and work ethic.
-          </p>
+    <section id="experience" className="py-24 px-6 bg-secondary/50">
+      <div className="container mx-auto max-w-6xl">
+        <div className="text-center mb-16">
+          <h2 className="text-sm font-medium tracking-widest uppercase text-accent mb-3">Experience</h2>
+          <p className="text-3xl md:text-4xl font-bold text-foreground">My Work History</p>
         </div>
 
-        <div className="relative">
-          {/* Timeline line */}
-          <div className="absolute left-4 md:left-1/2 md:-translate-x-px top-0 bottom-0 w-0.5 bg-border" />
+        <div className="relative pl-8 border-l-2 border-accent/30 space-y-12">
+          {experiences.map((exp, index) => (
+            <div key={exp.title} className="relative">
+              {/* Timeline dot */}
+              <div className="absolute -left-[41px] top-0 w-4 h-4 bg-accent rounded-full border-4 border-background" />
 
-          <div className="space-y-8">
-            {experiences.map((exp, index) => (
-              <div
-                key={exp.title}
-                className={`relative flex flex-col md:flex-row gap-4 ${index % 2 === 0 ? "md:flex-row-reverse" : ""}`}
-              >
-                {/* Timeline dot */}
-                <div className="absolute left-4 md:left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-accent border-4 border-background" />
-
-                {/* Content */}
-                <div className={`ml-10 md:ml-0 md:w-1/2 ${index % 2 === 0 ? "md:pl-8" : "md:pr-8 md:text-right"}`}>
-                  <Card className="bg-card border-border hover:border-accent/50 transition-all hover:shadow-lg">
-                    <CardContent className="p-6">
-                      <div className={`flex items-center gap-2 mb-2 ${index % 2 === 0 ? "" : "md:justify-end"}`}>
-                        <Briefcase className="h-4 w-4 text-accent" />
-                        <span className="text-sm font-medium text-accent">{exp.company}</span>
-                      </div>
-                      <h3 className="text-lg font-semibold text-foreground mb-2">{exp.title}</h3>
-                      <div
-                        className={`flex items-center gap-2 text-sm text-muted-foreground mb-3 ${index % 2 === 0 ? "" : "md:justify-end"}`}
-                      >
-                        <Calendar className="h-4 w-4" />
-                        {exp.duration}
-                      </div>
-                      <p className="text-sm text-muted-foreground">{exp.description}</p>
-                    </CardContent>
-                  </Card>
+              <div className="bg-card p-6 border border-border hover:border-accent hover:shadow-lg transition-all">
+                <div className="flex flex-wrap items-center gap-4 mb-4">
+                  <span className="flex items-center gap-2 text-accent font-medium">
+                    <Briefcase className="h-4 w-4" />
+                    {exp.company}
+                  </span>
+                  <span className="flex items-center gap-2 text-muted-foreground text-sm">
+                    <MapPin className="h-4 w-4" />
+                    {exp.location}
+                  </span>
+                  <span className="flex items-center gap-2 text-muted-foreground text-sm">
+                    <Calendar className="h-4 w-4" />
+                    {exp.duration}
+                  </span>
                 </div>
+
+                <h3 className="text-xl font-bold text-foreground mb-4">{exp.title}</h3>
+
+                <ul className="space-y-2">
+                  {exp.description.map((item, i) => (
+                    <li key={i} className="flex items-start gap-3 text-muted-foreground">
+                      <span className="text-accent mt-1.5 w-1.5 h-1.5 bg-accent rounded-full flex-shrink-0" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>

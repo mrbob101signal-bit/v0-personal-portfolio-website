@@ -1,44 +1,60 @@
 import { ArrowDown } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
 export function HeroSection() {
   return (
-    <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-accent/10" />
+    <section id="home" className="min-h-screen flex items-center justify-center relative">
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `url('/professional-dark-office-workspace-with-computer-c.jpg')`,
+        }}
+      />
+      <div className="absolute inset-0 bg-black/70" />
 
-      <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
-        <div className="mb-6">
-          <span className="inline-block px-4 py-2 rounded-full bg-accent/10 text-accent text-sm font-medium border border-accent/20">
-            Year 3 Term 2 • IT Student
-          </span>
-        </div>
+      <div className="relative z-10 container mx-auto px-6 text-center">
+        <p className="text-accent font-medium tracking-widest uppercase text-sm mb-4">Welcome to my portfolio</p>
 
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-foreground mb-6 text-balance">
-          Hello, I'm <span className="text-accent">OEUN Chhinh</span>
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 tracking-tight">
+          I'm <span className="text-accent">OEUN Chhinh</span>
         </h1>
 
-        <p className="text-lg sm:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto text-pretty">
-          Passionate IT student at The University of Cambodia, specializing in Web Design, PHP, Laravel, and Java
-          development.
+        <div className="flex flex-wrap items-center justify-center gap-2 text-white/80 text-lg md:text-xl mb-8">
+          <span>Web Designer</span>
+          <span className="text-accent">|</span>
+          <span>PHP Developer</span>
+          <span className="text-accent">|</span>
+          <span>IT Student</span>
+        </div>
+
+        <p className="text-white/70 max-w-2xl mx-auto mb-10 text-lg leading-relaxed">
+          A passionate 3rd-year IT student at The University of Cambodia with hands-on experience in technical support
+          and software development.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
-            <a href="#contact">Get in Touch</a>
-          </Button>
-          <Button asChild variant="outline" size="lg">
-            <a href="#about">Learn More</a>
-          </Button>
+          <Link
+            href="#about"
+            className="px-8 py-3 bg-accent text-white font-medium hover:bg-accent/90 transition-colors"
+          >
+            Discover More
+          </Link>
+          <Link
+            href="#contact"
+            className="px-8 py-3 border border-white/30 text-white font-medium hover:bg-white/10 transition-colors"
+          >
+            Contact Me
+          </Link>
         </div>
-
-        <a
-          href="#about"
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 text-muted-foreground hover:text-accent transition-colors animate-bounce"
-        >
-          <ArrowDown className="h-6 w-6" />
-        </a>
       </div>
+
+      <Link
+        href="#about"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/50 hover:text-accent transition-colors animate-bounce"
+        aria-label="Scroll to about section"
+      >
+        <ArrowDown className="h-6 w-6" />
+      </Link>
     </section>
   )
 }

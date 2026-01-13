@@ -1,107 +1,132 @@
-import { Mail, Phone, Linkedin, Github, Facebook } from "lucide-react"
-import { Card, CardContent } from "@/components/ui/card"
+import { Mail, Phone, MapPin, Send, Linkedin, Github, Facebook } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
 
 const contactInfo = [
   {
+    icon: MapPin,
+    title: "Address",
+    value: "Tbong Khmum Province, Cambodia",
+  },
+  {
     icon: Mail,
-    label: "Email",
+    title: "Email",
     value: "chhinh007@gmail.com",
     href: "mailto:chhinh007@gmail.com",
   },
   {
     icon: Phone,
-    label: "Phone",
+    title: "Phone",
     value: "0884395053",
     href: "tel:0884395053",
   },
 ]
 
 const socialLinks = [
-  {
-    icon: Linkedin,
-    label: "LinkedIn",
-    name: "Mr Chhinh",
-    href: "https://linkedin.com/in/mr-chhinh",
-  },
-  {
-    icon: Facebook,
-    label: "Facebook",
-    name: "Pu Chhinh",
-    href: "https://facebook.com/pu.chhinh",
-  },
-  {
-    icon: Github,
-    label: "GitHub",
-    name: "chhinh007",
-    href: "https://github.com/chhinh007",
-  },
+  { icon: Linkedin, href: "https://linkedin.com/in/mr-chhinh", label: "LinkedIn" },
+  { icon: Github, href: "https://github.com/chhinh007", label: "GitHub" },
+  { icon: Facebook, href: "https://facebook.com/pu.chhinh", label: "Facebook" },
 ]
 
 export function ContactSection() {
   return (
-    <section id="contact" className="py-20 bg-secondary/30">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
-            Get In <span className="text-accent">Touch</span>
-          </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Feel free to reach out for collaboration, opportunities, or just a friendly chat!
-          </p>
+    <section id="contact" className="py-24 px-6 bg-background">
+      <div className="container mx-auto max-w-6xl">
+        <div className="text-center mb-16">
+          <h2 className="text-sm font-medium tracking-widest uppercase text-accent mb-3">Get In Touch</h2>
+          <p className="text-3xl md:text-4xl font-bold text-foreground">Contact Me</p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {/* Contact Information */}
-          <Card className="bg-card border-border">
-            <CardContent className="p-6 space-y-6">
-              <h3 className="text-lg font-semibold text-foreground">Contact Information</h3>
+        <div className="grid lg:grid-cols-2 gap-12">
+          {/* Contact Info */}
+          <div>
+            <h3 className="text-xl font-bold text-foreground mb-6">Let's talk about everything!</h3>
+            <p className="text-muted-foreground mb-8 leading-relaxed">
+              Feel free to reach out for collaboration, opportunities, or just a friendly chat. I'm always open to
+              discussing new projects and creative ideas.
+            </p>
+
+            <div className="space-y-6 mb-8">
               {contactInfo.map((item) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  className="flex items-center gap-4 p-3 rounded-lg bg-muted/50 hover:bg-accent/10 transition-colors group"
-                >
-                  <div className="p-2 rounded-lg bg-accent/10 group-hover:bg-accent/20 transition-colors">
+                <div key={item.title} className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-accent/10 flex items-center justify-center flex-shrink-0">
                     <item.icon className="h-5 w-5 text-accent" />
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">{item.label}</p>
-                    <p className="font-medium text-foreground">{item.value}</p>
+                    <h4 className="font-semibold text-foreground">{item.title}</h4>
+                    {item.href ? (
+                      <a href={item.href} className="text-muted-foreground hover:text-accent transition-colors">
+                        {item.value}
+                      </a>
+                    ) : (
+                      <p className="text-muted-foreground">{item.value}</p>
+                    )}
                   </div>
-                </a>
+                </div>
               ))}
-            </CardContent>
-          </Card>
+            </div>
 
-          {/* Social Links */}
-          <Card className="bg-card border-border">
-            <CardContent className="p-6 space-y-6">
-              <h3 className="text-lg font-semibold text-foreground">Connect With Me</h3>
-              <div className="space-y-4">
-                {socialLinks.map((item) => (
+            {/* Social Links */}
+            <div>
+              <h4 className="font-semibold text-foreground mb-4">Follow Me</h4>
+              <div className="flex gap-3">
+                {socialLinks.map((social) => (
                   <a
-                    key={item.label}
-                    href={item.href}
+                    key={social.label}
+                    href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-4 p-3 rounded-lg bg-muted/50 hover:bg-accent/10 transition-colors group"
+                    className="w-10 h-10 border border-border flex items-center justify-center hover:bg-accent hover:border-accent hover:text-white transition-colors"
+                    aria-label={social.label}
                   >
-                    <div className="p-2 rounded-lg bg-accent/10 group-hover:bg-accent/20 transition-colors">
-                      <item.icon className="h-5 w-5 text-accent" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">{item.label}</p>
-                      <p className="font-medium text-foreground">{item.name}</p>
-                    </div>
+                    <social.icon className="h-4 w-4" />
                   </a>
                 ))}
               </div>
-              <Button asChild className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
-                <a href="mailto:chhinh007@gmail.com">Send Me a Message</a>
+            </div>
+          </div>
+
+          {/* Contact Form */}
+          <div className="bg-card border border-border p-8">
+            <form className="space-y-5">
+              <div className="grid sm:grid-cols-2 gap-5">
+                <div>
+                  <Input
+                    placeholder="Name"
+                    className="border-border bg-background focus:border-accent rounded-none h-12"
+                  />
+                </div>
+                <div>
+                  <Input
+                    type="email"
+                    placeholder="Email"
+                    className="border-border bg-background focus:border-accent rounded-none h-12"
+                  />
+                </div>
+              </div>
+              <div>
+                <Input
+                  placeholder="Subject"
+                  className="border-border bg-background focus:border-accent rounded-none h-12"
+                />
+              </div>
+              <div>
+                <Textarea
+                  placeholder="Message"
+                  rows={6}
+                  className="border-border bg-background focus:border-accent rounded-none resize-none"
+                />
+              </div>
+              <Button
+                type="submit"
+                className="w-full bg-accent text-white hover:bg-accent/90 rounded-none h-12 font-medium"
+              >
+                <Send className="h-4 w-4 mr-2" />
+                Send Message
               </Button>
-            </CardContent>
-          </Card>
+            </form>
+          </div>
         </div>
       </div>
     </section>

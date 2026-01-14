@@ -63,12 +63,15 @@ export default function AdminDashboard() {
         body: JSON.stringify(about),
       })
       if (res.ok) {
+        const updatedAbout = await res.json()
+        setAbout(updatedAbout)
         alert("About section updated successfully!")
-        loadAllData()
+      } else {
+        alert("Error: " + res.statusText)
       }
     } catch (error) {
       console.error("Error updating about data:", error)
-      alert("Error updating about data")
+      alert("Error updating about data: " + error)
     } finally {
       setLoading(false)
     }

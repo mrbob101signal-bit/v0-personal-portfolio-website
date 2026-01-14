@@ -64,6 +64,7 @@ export default function AdminDashboard() {
       })
       if (res.ok) {
         alert("About section updated successfully!")
+        loadAllData()
       }
     } catch (error) {
       console.error("Error updating about data:", error)

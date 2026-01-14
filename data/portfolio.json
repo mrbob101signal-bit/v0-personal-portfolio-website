@@ -6,9 +6,9 @@
     "detailedBio": "I am a dedicated 3rd-year IT student at The University of Cambodia, originally from Tbong Khmum Province. My journey in technology began at ETEC Institute, where I studied C, C++, and Web Design, building a strong foundation for my career.",
     "additionalInfo": "With over a year of experience at DDD company and 3 months as an IT Support Intern at UC, I have developed practical skills in both technical support and professional collaboration. My career objective is to excel in Web Design, PHP, Laravel, and Java development.",
     "email": "oeunchhinh@gmail.com",
-    "phone": "0884395053",
+    "phone": "089649779",
     "location": "Tbong Khmum, Cambodia",
-    "image": "/chhinh03.jpg",
+    "image": "/chhinh02.png",
     "highlights": [
       {
         "icon": "GraduationCap",
@@ -76,10 +76,10 @@
       "id": "1768354355923",
       "title": "Employee",
       "company": "Moto dealer",
-      "location": "Kampong Cham",
+      "location": "Kampong Cham city",
       "duration": "3 months",
       "description": [
-        "I worked there since 2019"
+        "I worked there since 2019 and for three months."
       ]
     }
   ],

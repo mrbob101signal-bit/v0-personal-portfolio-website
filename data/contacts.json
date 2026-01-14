@@ -34,5 +34,14 @@
     "message": "Feel free to reach out for collaboration, opportunities, or just a friendly chat. I'm always open to discussing new projects and creative ideas.",
     "createdAt": "2026-01-14T02:06:15.720Z",
     "status": "read"
+  },
+  {
+    "id": "1768362327674",
+    "name": "Seyha",
+    "email": "seyha12@gmail.com",
+    "subject": "For my testing",
+    "message": "Here’s a clear step-by-step guide to deploy (upload) your project to GitHub, starting from zero. This works for any project (HTML, Laravel, Spring Boot, Next.js, Java, etc.).",
+    "createdAt": "2026-01-14T03:45:27.675Z",
+    "status": "unread"
   }
 ]

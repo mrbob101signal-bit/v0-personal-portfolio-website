@@ -17,6 +17,7 @@ export function EducationSection() {
     fetch("/api/portfolio/education")
       .then((res) => res.json())
       .then((data) => {
+        console.log("Fetched education data:", data)
         setEducation(data)
         setLoading(false)
       })

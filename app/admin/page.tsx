@@ -44,7 +44,7 @@ export default function AdminDashboard() {
         fetch("/api/portfolio/education"),
         fetch("/api/portfolio/skills"),
       ])
-      
+
       setAbout(await aboutRes.json())
       setExperience(await expRes.json())
       setEducation(await eduRes.json())
@@ -106,7 +106,7 @@ export default function AdminDashboard() {
       duration: "Duration",
       description: ["Add description here"],
     }
-    
+
     setLoading(true)
     try {
       const res = await fetch("/api/portfolio/experience", {
@@ -128,17 +128,19 @@ export default function AdminDashboard() {
 
   const handleDeleteExperience = async (expId: string) => {
     if (!confirm("Are you sure you want to delete this experience?")) return
-    
+
     setLoading(true)
     try {
-      const res = await fetch("/api/portfolio/experience", {
+      const res = await fetch(`/api/portfolio/experience?id=${expId}`, {
         method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: expId }),
       })
+
       if (res.ok) {
         alert("Experience deleted successfully!")
         loadAllData()
+      } else {
+        const err = await res.json()
+        alert(err.error || "Failed to delete experience")
       }
     } catch (error) {
       console.error("Error deleting experience:", error)
@@ -177,7 +179,7 @@ export default function AdminDashboard() {
       period: "Start - End",
       status: "Current",
     }
-    
+
     setLoading(true)
     try {
       const res = await fetch("/api/portfolio/education", {
@@ -199,17 +201,19 @@ export default function AdminDashboard() {
 
   const handleDeleteEducation = async (eduId: string) => {
     if (!confirm("Are you sure you want to delete this education?")) return
-    
+
     setLoading(true)
     try {
-      const res = await fetch("/api/portfolio/education", {
+      const res = await fetch(`/api/portfolio/education?id=${eduId}`, {
         method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: eduId }),
       })
+
       if (res.ok) {
         alert("Education deleted successfully!")
         loadAllData()
+      } else {
+        const err = await res.json()
+        alert(err.error || "Failed to delete education")
       }
     } catch (error) {
       console.error("Error deleting education:", error)
@@ -221,17 +225,19 @@ export default function AdminDashboard() {
 
   const handleDeleteSkill = async (skillId: string) => {
     if (!confirm("Are you sure you want to delete this skill?")) return
-    
+
     setLoading(true)
     try {
-      const res = await fetch("/api/portfolio/skills", {
+      const res = await fetch(`/api/portfolio/skills?id=${skillId}`, {
         method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: skillId }),
       })
+
       if (res.ok) {
         alert("Skill deleted successfully!")
         loadAllData()
+      } else {
+        const err = await res.json()
+        alert(err.error || "Failed to delete skill")
       }
     } catch (error) {
       console.error("Error deleting skill:", error)
@@ -268,7 +274,7 @@ export default function AdminDashboard() {
       category: "Other",
       level: "Intermediate",
     }
-    
+
     setLoading(true)
     try {
       const res = await fetch("/api/portfolio/skills", {
@@ -485,7 +491,7 @@ export default function AdminDashboard() {
                   + Add Experience
                 </Button>
               </div>
-              
+
               {experience.length === 0 ? (
                 <p className="text-muted-foreground">No experience entries yet.</p>
               ) : (
@@ -629,7 +635,7 @@ export default function AdminDashboard() {
                   + Add Education
                 </Button>
               </div>
-              
+
               {education.length === 0 ? (
                 <p className="text-muted-foreground">No education entries yet.</p>
               ) : (
@@ -768,7 +774,7 @@ export default function AdminDashboard() {
                   + Add Skill
                 </Button>
               </div>
-              
+
               {skills.length === 0 ? (
                 <p className="text-muted-foreground">No skills yet. Click "Add Skill" to add one.</p>
               ) : (

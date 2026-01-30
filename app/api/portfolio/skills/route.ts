@@ -1,60 +1,34 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getSkills, updatePortfolioData, getPortfolioData } from "@/lib/portfolio-data"
-import { Skill } from "@/lib/types/portfolio"
+import { connectDB } from "@/lib/mongodb"
+import Skill from "@/app/models/Skill"
 
 export async function GET() {
-  try {
-    const skills = await getSkills()
-    return NextResponse.json(skills)
-  } catch (error) {
-    return NextResponse.json({ error: "Failed to fetch skills data" }, { status: 500 })
-  }
+  await connectDB()
+  const skills = await Skill.find().sort({ name: 1 })
+  return NextResponse.json(skills)
 }
 
-export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json()
-    const currentData = await getPortfolioData()
-    const newSkill: Skill = {
-      id: Date.now().toString(),
-      ...body,
-    }
-    await updatePortfolioData({
-      ...currentData,
-      skills: [...currentData.skills, newSkill],
-    })
-    return NextResponse.json(newSkill, { status: 201 })
-  } catch (error) {
-    return NextResponse.json({ error: "Failed to create skill" }, { status: 500 })
-  }
+export async function POST(req: NextRequest) {
+  await connectDB()
+  const body = await req.json()
+  const skill = await Skill.create(body)
+  return NextResponse.json(skill, { status: 201 })
 }
 
-export async function PUT(request: NextRequest) {
-  try {
-    const body = await request.json()
-    const currentData = await getPortfolioData()
-    const updatedSkills = currentData.skills.map((skill) => (skill.id === body.id ? body : skill))
-    await updatePortfolioData({
-      ...currentData,
-      skills: updatedSkills,
-    })
-    return NextResponse.json(body)
-  } catch (error) {
-    return NextResponse.json({ error: "Failed to update skill" }, { status: 500 })
-  }
+export async function PUT(req: NextRequest) {
+  await connectDB()
+  const body = await req.json()
+  const skill = await Skill.findByIdAndUpdate(body._id, body, { new: true })
+  return NextResponse.json(skill)
 }
 
-export async function DELETE(request: NextRequest) {
-  try {
-    const body = await request.json()
-    const currentData = await getPortfolioData()
-    const updatedSkills = currentData.skills.filter((skill) => skill.id !== body.id)
-    await updatePortfolioData({
-      ...currentData,
-      skills: updatedSkills,
-    })
-    return NextResponse.json({ success: true })
-  } catch (error) {
-    return NextResponse.json({ error: "Failed to delete skill" }, { status: 500 })
-  }
+export async function DELETE(req: NextRequest) {
+  await connectDB()
+  const { searchParams } = new URL(req.url)
+  const id = searchParams.get("id")
+
+  if (!id) return NextResponse.json({ error: "Skill ID required" }, { status: 400 })
+
+  await Skill.findByIdAndDelete(id)
+  return NextResponse.json({ success: true })
 }

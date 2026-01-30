@@ -13,10 +13,35 @@ export default function AdminDashboard() {
   const [experience, setExperience] = useState<any[]>([])
   const [education, setEducation] = useState<any[]>([])
   const [skills, setSkills] = useState<any[]>([])
+  const [newExperience, setNewExperience] = useState<any>({
+    title: "IT Support Intern",
+    company: "The University of Cambodia",
+    location: "Phnom Penh",
+    duration: "3 Months",
+    description: [
+      "Provided technical support to staff and students",
+      "Troubleshot hardware and software issues",
+      "Maintained IT infrastructure and equipment",
+      "Assisted in network administration tasks",
+    ],
+  })
+  const [newEducation, setNewEducation] = useState<any>({
+    institution: "The University of Cambodia",
+    program: "Bachelor of Information Technology",
+    specialization: "Software Project Management",
+    period: "2023 - Present",
+    status: "Current",
+  })
+  const [newSkill, setNewSkill] = useState<any>({
+    name: "JavaScript",
+    category: "Frontend",
+    level: "Advanced",
+  })
   const [loading, setLoading] = useState(false)
   const [session, setSession] = useState<any>(null)
   const [isAuthorized, setIsAuthorized] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
+  const [mounted, setMounted] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
@@ -99,12 +124,10 @@ export default function AdminDashboard() {
   }
 
   const handleAddExperience = async () => {
-    const newExperience = {
-      title: "New Position",
-      company: "Company Name",
-      location: "Location",
-      duration: "Duration",
-      description: ["Add description here"],
+    // prevent adding empty entries
+    if (!newExperience.title || !newExperience.company) {
+      alert("Please provide at least a title and company for the experience.")
+      return
     }
 
     setLoading(true)
@@ -112,11 +135,19 @@ export default function AdminDashboard() {
       const res = await fetch("/api/portfolio/experience", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newExperience),
+        body: JSON.stringify({
+          ...newExperience,
+          description: newExperience.description?.filter((line: string) => line.trim().length > 0) || [],
+        }),
       })
       if (res.ok) {
         alert("Experience added successfully!")
+        setNewExperience({ title: "", company: "", location: "", duration: "", description: [] })
         loadAllData()
+      } else {
+        const err = await res.text()
+        console.error("Add experience failed:", err)
+        alert("Failed to add experience")
       }
     } catch (error) {
       console.error("Error adding experience:", error)
@@ -172,14 +203,6 @@ export default function AdminDashboard() {
   }
 
   const handleAddEducation = async () => {
-    const newEducation = {
-      institution: "Institution Name",
-      program: "Program Name",
-      specialization: "Specialization",
-      period: "Start - End",
-      status: "Current",
-    }
-
     setLoading(true)
     try {
       const res = await fetch("/api/portfolio/education", {
@@ -189,6 +212,13 @@ export default function AdminDashboard() {
       })
       if (res.ok) {
         alert("Education added successfully!")
+        setNewEducation({
+          institution: "",
+          program: "",
+          specialization: "",
+          period: "",
+          status: "Current",
+        })
         loadAllData()
       }
     } catch (error) {
@@ -269,12 +299,6 @@ export default function AdminDashboard() {
   }
 
   const handleAddSkill = async () => {
-    const newSkill = {
-      name: "New Skill",
-      category: "Other",
-      level: "Intermediate",
-    }
-
     setLoading(true)
     try {
       const res = await fetch("/api/portfolio/skills", {
@@ -284,6 +308,11 @@ export default function AdminDashboard() {
       })
       if (res.ok) {
         alert("Skill added successfully!")
+        setNewSkill({
+          name: "",
+          category: "",
+          level: "",
+        })
         loadAllData()
       }
     } catch (error) {
@@ -353,31 +382,31 @@ export default function AdminDashboard() {
         <div className="flex gap-4 mb-8 flex-wrap">
           <Button
             onClick={() => setActiveTab("about")}
-            className={activeTab === "about" ? "bg-accent text-white" : "bg-secondary"}
+            className={activeTab === "about" ? "bg-accent text-white" : "bg-secondary text-gray-700"}
           >
             About
           </Button>
           <Button
             onClick={() => setActiveTab("experience")}
-            className={activeTab === "experience" ? "bg-accent text-white" : "bg-secondary"}
+            className={activeTab === "experience" ? "bg-accent text-white" : "bg-secondary text-gray-700"}
           >
             Experience
           </Button>
           <Button
             onClick={() => setActiveTab("education")}
-            className={activeTab === "education" ? "bg-accent text-white" : "bg-secondary"}
+            className={activeTab === "education" ? "bg-accent text-white" : "bg-secondary text-gray-700"}
           >
             Education
           </Button>
           <Button
             onClick={() => setActiveTab("skills")}
-            className={activeTab === "skills" ? "bg-accent text-white" : "bg-secondary"}
+            className={activeTab === "skills" ? "bg-accent text-white" : "bg-secondary text-gray-700"}
           >
             Skills
           </Button>
         </div>
 
-        {activeTab === "about" && about && (
+        {activeTab === "about" && (
           <div className="bg-card border border-border rounded-lg p-8">
             <h2 className="text-2xl font-bold text-foreground mb-2">About Section</h2>
             <p className="text-muted-foreground mb-6">Update your personal information</p>
@@ -386,7 +415,7 @@ export default function AdminDashboard() {
               <div>
                 <label className="block text-sm font-medium mb-2">Name</label>
                 <Input
-                  value={about.name}
+                  value={about?.name || ""}
                   onChange={(e) => setAbout({ ...about, name: e.target.value })}
                   placeholder="Your name"
                 />
@@ -395,7 +424,7 @@ export default function AdminDashboard() {
               <div>
                 <label className="block text-sm font-medium mb-2">Title</label>
                 <Input
-                  value={about.title}
+                  value={about?.title || ""}
                   onChange={(e) => setAbout({ ...about, title: e.target.value })}
                   placeholder="Your title"
                 />
@@ -404,7 +433,7 @@ export default function AdminDashboard() {
               <div>
                 <label className="block text-sm font-medium mb-2">Bio</label>
                 <Input
-                  value={about.bio}
+                  value={about?.bio || ""}
                   onChange={(e) => setAbout({ ...about, bio: e.target.value })}
                   placeholder="Short bio"
                 />
@@ -413,7 +442,7 @@ export default function AdminDashboard() {
               <div>
                 <label className="block text-sm font-medium mb-2">Detailed Bio</label>
                 <Textarea
-                  value={about.detailedBio}
+                  value={about?.detailedBio || ""}
                   onChange={(e) => setAbout({ ...about, detailedBio: e.target.value })}
                   placeholder="Detailed biography"
                   rows={4}
@@ -423,7 +452,7 @@ export default function AdminDashboard() {
               <div>
                 <label className="block text-sm font-medium mb-2">Additional Info</label>
                 <Textarea
-                  value={about.additionalInfo}
+                  value={about?.additionalInfo || ""}
                   onChange={(e) => setAbout({ ...about, additionalInfo: e.target.value })}
                   placeholder="Additional information"
                   rows={4}
@@ -434,7 +463,7 @@ export default function AdminDashboard() {
                 <div>
                   <label className="block text-sm font-medium mb-2">Email</label>
                   <Input
-                    value={about.email}
+                    value={about?.email || ""}
                     onChange={(e) => setAbout({ ...about, email: e.target.value })}
                     placeholder="Email"
                   />
@@ -442,7 +471,7 @@ export default function AdminDashboard() {
                 <div>
                   <label className="block text-sm font-medium mb-2">Phone</label>
                   <Input
-                    value={about.phone}
+                    value={about?.phone || ""}
                     onChange={(e) => setAbout({ ...about, phone: e.target.value })}
                     placeholder="Phone"
                   />
@@ -452,7 +481,7 @@ export default function AdminDashboard() {
               <div>
                 <label className="block text-sm font-medium mb-2">Location</label>
                 <Input
-                  value={about.location}
+                  value={about?.location || ""}
                   onChange={(e) => setAbout({ ...about, location: e.target.value })}
                   placeholder="Location"
                 />
@@ -461,7 +490,7 @@ export default function AdminDashboard() {
               <div>
                 <label className="block text-sm font-medium mb-2">Image URL</label>
                 <Input
-                  value={about.image}
+                  value={about?.image || ""}
                   onChange={(e) => setAbout({ ...about, image: e.target.value })}
                   placeholder="Image URL"
                 />
@@ -483,13 +512,71 @@ export default function AdminDashboard() {
             <div className="bg-card border border-border rounded-lg p-8">
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-bold text-foreground">Experience</h2>
-                <Button
-                  onClick={handleAddExperience}
-                  disabled={loading}
-                  className="bg-green-500 hover:bg-green-600 text-white"
-                >
-                  + Add Experience
-                </Button>
+              </div>
+
+              <div className="border border-border rounded-lg p-6 bg-secondary/30 mb-8">
+                <h3 className="text-lg font-semibold text-foreground mb-4">Add New Experience</h3>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Title</label>
+                    <Input
+                      value={newExperience.title}
+                      onChange={(e) => setNewExperience({ ...newExperience, title: e.target.value })}
+                      placeholder="Job title"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Company</label>
+                      <Input
+                        value={newExperience.company}
+                        onChange={(e) => setNewExperience({ ...newExperience, company: e.target.value })}
+                        placeholder="Company name"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Location</label>
+                      <Input
+                        value={newExperience.location}
+                        onChange={(e) => setNewExperience({ ...newExperience, location: e.target.value })}
+                        placeholder="City, Country"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Duration</label>
+                    <Input
+                      value={newExperience.duration}
+                      onChange={(e) => setNewExperience({ ...newExperience, duration: e.target.value })}
+                      placeholder="e.g. 3 Months"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Description (each line is a bullet point)</label>
+                    <Textarea
+                      value={newExperience.description?.join("\n") || ""}
+                      onChange={(e) =>
+                        setNewExperience({
+                          ...newExperience,
+                          description: e.target.value.split("\n"),
+                        })
+                      }
+                      rows={4}
+                      placeholder="Add bullet points, one per line"
+                    />
+                  </div>
+
+                  <Button
+                    onClick={handleAddExperience}
+                    disabled={loading}
+                    className="bg-green-500 hover:bg-green-600 text-white w-full"
+                  >
+                    {loading ? "Adding..." : "Add Experience"}
+                  </Button>
+                </div>
               </div>
 
               {experience.length === 0 ? (
@@ -627,13 +714,67 @@ export default function AdminDashboard() {
             <div className="bg-card border border-border rounded-lg p-8">
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-bold text-foreground">Education</h2>
-                <Button
-                  onClick={handleAddEducation}
-                  disabled={loading}
-                  className="bg-green-500 hover:bg-green-600 text-white"
-                >
-                  + Add Education
-                </Button>
+              </div>
+
+              <div className="border border-border rounded-lg p-6 bg-secondary/30 mb-8">
+                <h3 className="text-lg font-semibold text-foreground mb-4">Add New Education</h3>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Institution</label>
+                    <Input
+                      value={newEducation.institution}
+                      onChange={(e) => setNewEducation({ ...newEducation, institution: e.target.value })}
+                      placeholder="Institution name"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Program</label>
+                    <Input
+                      value={newEducation.program}
+                      onChange={(e) => setNewEducation({ ...newEducation, program: e.target.value })}
+                      placeholder="Program"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Specialization</label>
+                    <Input
+                      value={newEducation.specialization}
+                      onChange={(e) =>
+                        setNewEducation({ ...newEducation, specialization: e.target.value })
+                      }
+                      placeholder="Specialization"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Period</label>
+                      <Input
+                        value={newEducation.period}
+                        onChange={(e) => setNewEducation({ ...newEducation, period: e.target.value })}
+                        placeholder="e.g. 2023 - Present"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Status</label>
+                      <Input
+                        value={newEducation.status}
+                        onChange={(e) => setNewEducation({ ...newEducation, status: e.target.value })}
+                        placeholder="Current"
+                      />
+                    </div>
+                  </div>
+
+                  <Button
+                    onClick={handleAddEducation}
+                    disabled={loading}
+                    className="bg-green-500 hover:bg-green-600 text-white w-full"
+                  >
+                    {loading ? "Adding..." : "Add Education"}
+                  </Button>
+                </div>
               </div>
 
               {education.length === 0 ? (
@@ -766,13 +907,47 @@ export default function AdminDashboard() {
             <div className="bg-card border border-border rounded-lg p-8">
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-bold text-foreground">Skills</h2>
-                <Button
-                  onClick={handleAddSkill}
-                  disabled={loading}
-                  className="bg-green-500 hover:bg-green-600 text-white"
-                >
-                  + Add Skill
-                </Button>
+              </div>
+
+              <div className="border border-border rounded-lg p-6 bg-secondary/30 mb-8">
+                <h3 className="text-lg font-semibold text-foreground mb-4">Add New Skill</h3>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Skill Name</label>
+                    <Input
+                      value={newSkill.name}
+                      onChange={(e) => setNewSkill({ ...newSkill, name: e.target.value })}
+                      placeholder="e.g., JavaScript"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Category</label>
+                      <Input
+                        value={newSkill.category}
+                        onChange={(e) => setNewSkill({ ...newSkill, category: e.target.value })}
+                        placeholder="e.g., Frontend"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Level</label>
+                      <Input
+                        value={newSkill.level}
+                        onChange={(e) => setNewSkill({ ...newSkill, level: e.target.value })}
+                        placeholder="e.g., Advanced"
+                      />
+                    </div>
+                  </div>
+
+                  <Button
+                    onClick={handleAddSkill}
+                    disabled={loading}
+                    className="bg-green-500 hover:bg-green-600 text-white w-full"
+                  >
+                    {loading ? "Adding..." : "Add Skill"}
+                  </Button>
+                </div>
               </div>
 
               {skills.length === 0 ? (

@@ -11,6 +11,7 @@ export async function GET() {
 export async function PUT(req: NextRequest) {
   await connectDB()
   const body = await req.json()
+  console.log("PUT /api/portfolio/about", body)
   const about = await About.findOneAndUpdate({}, body, {
     upsert: true,
     new: true,

@@ -782,8 +782,8 @@ export default function AdminDashboard() {
               ) : (
                 <div className="space-y-6">
                   {education.map((edu) => (
-                    <div key={edu.id} className="border border-border rounded-lg p-6 bg-secondary/50">
-                      {editingId === edu.id ? (
+                    <div key={edu._id || edu.id} className="border border-border rounded-lg p-6 bg-secondary/50">
+                      {editingId === (edu._id || edu.id) ? (
                         <div className="space-y-4">
                           <div>
                             <label className="block text-sm font-medium mb-2">Institution</label>
@@ -876,13 +876,13 @@ export default function AdminDashboard() {
                             </div>
                             <div className="flex gap-2">
                               <Button
-                                onClick={() => setEditingId(edu.id)}
+                                onClick={() => setEditingId(edu._id || edu.id)}
                                 className="bg-accent hover:bg-accent/90 text-white"
                               >
                                 Edit
                               </Button>
                               <Button
-                                onClick={() => handleDeleteEducation(edu.id)}
+                                onClick={() => handleDeleteEducation(edu._id || edu.id)}
                                 disabled={loading}
                                 className="bg-red-500 hover:bg-red-600 text-white"
                               >

@@ -11,6 +11,13 @@ const AboutSchema = new mongoose.Schema({
   phone: String,
   location: String,
   image: String,
+  highlights: [
+    {
+      icon: String,
+      value: String,
+      label: String,
+    },
+  ],
 })
 
 export default mongoose.models.About ||

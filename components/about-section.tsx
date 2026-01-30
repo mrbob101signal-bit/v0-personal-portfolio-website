@@ -91,7 +91,7 @@ export function AboutSection() {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-20">
-          {about.highlights.map((item) => {
+          {(Array.isArray(about.highlights) ? about.highlights : []).map((item) => {
             const IconComponent = iconMap[item.icon]
             return (
               <div

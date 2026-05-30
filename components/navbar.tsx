@@ -53,7 +53,7 @@ export function Navbar() {
               scrolled ? "text-foreground" : "text-white"
             }`}
           >
-            Chhinh<span className="text-accent">.</span>
+            Chhinh OEUN<span className="text-accent">.</span>
           </Link>
 
           {/* Desktop Navigation */}

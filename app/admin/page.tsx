@@ -35,7 +35,7 @@ export default function AdminDashboard() {
   const [newSkill, setNewSkill] = useState<any>({
     name: "JavaScript",
     category: "Frontend",
-    level: "Advanced",
+    level: 90,
   })
   const [loading, setLoading] = useState(false)
   const [session, setSession] = useState<any>(null)
@@ -43,6 +43,8 @@ export default function AdminDashboard() {
   const [editingId, setEditingId] = useState<string | null>(null)
   const [mounted, setMounted] = useState(false)
   const router = useRouter()
+
+  const getItemId = (item: any) => item?._id || item?.id
 
   useEffect(() => {
     const userSession = getSession()
@@ -311,7 +313,7 @@ export default function AdminDashboard() {
         setNewSkill({
           name: "",
           category: "",
-          level: "",
+          level: 0,
         })
         loadAllData()
       }
@@ -583,17 +585,20 @@ export default function AdminDashboard() {
                 <p className="text-muted-foreground">No experience entries yet.</p>
               ) : (
                 <div className="space-y-6">
-                  {experience.map((exp) => (
-                    <div key={exp.id} className="border border-border rounded-lg p-6 bg-secondary/50">
-                      {editingId === exp.id ? (
+                  {experience.map((exp) => {
+                    const expId = getItemId(exp)
+
+                    return (
+                    <div key={expId} className="border border-border rounded-lg p-6 bg-secondary/50">
+                      {editingId === expId ? (
                         <div className="space-y-4">
                           <div>
                             <label className="block text-sm font-medium mb-2">Title</label>
                             <Input
-                              value={exp.title}
+                              value={exp.title ?? ""}
                               onChange={(e) => {
                                 const updated = experience.map((x) =>
-                                  x.id === exp.id ? { ...x, title: e.target.value } : x
+                                  getItemId(x) === expId ? { ...x, title: e.target.value } : x
                                 )
                                 setExperience(updated)
                               }}
@@ -604,10 +609,10 @@ export default function AdminDashboard() {
                             <div>
                               <label className="block text-sm font-medium mb-2">Company</label>
                               <Input
-                                value={exp.company}
+                                value={exp.company ?? ""}
                                 onChange={(e) => {
                                   const updated = experience.map((x) =>
-                                    x.id === exp.id ? { ...x, company: e.target.value } : x
+                                    getItemId(x) === expId ? { ...x, company: e.target.value } : x
                                   )
                                   setExperience(updated)
                                 }}
@@ -616,10 +621,10 @@ export default function AdminDashboard() {
                             <div>
                               <label className="block text-sm font-medium mb-2">Location</label>
                               <Input
-                                value={exp.location}
+                                value={exp.location ?? ""}
                                 onChange={(e) => {
                                   const updated = experience.map((x) =>
-                                    x.id === exp.id ? { ...x, location: e.target.value } : x
+                                    getItemId(x) === expId ? { ...x, location: e.target.value } : x
                                   )
                                   setExperience(updated)
                                 }}
@@ -630,10 +635,10 @@ export default function AdminDashboard() {
                           <div>
                             <label className="block text-sm font-medium mb-2">Duration</label>
                             <Input
-                              value={exp.duration}
+                              value={exp.duration ?? ""}
                               onChange={(e) => {
                                 const updated = experience.map((x) =>
-                                  x.id === exp.id ? { ...x, duration: e.target.value } : x
+                                  getItemId(x) === expId ? { ...x, duration: e.target.value } : x
                                 )
                                 setExperience(updated)
                               }}
@@ -646,7 +651,7 @@ export default function AdminDashboard() {
                               value={exp.description?.join("\n") || ""}
                               onChange={(e) => {
                                 const updated = experience.map((x) =>
-                                  x.id === exp.id ? { ...x, description: e.target.value.split("\n") } : x
+                                  getItemId(x) === expId ? { ...x, description: e.target.value.split("\n") } : x
                                 )
                                 setExperience(updated)
                               }}
@@ -679,13 +684,13 @@ export default function AdminDashboard() {
                             </div>
                             <div className="flex gap-2">
                               <Button
-                                onClick={() => setEditingId(exp.id)}
+                                onClick={() => setEditingId(expId)}
                                 className="bg-accent hover:bg-accent/90 text-white"
                               >
                                 Edit
                               </Button>
                               <Button
-                                onClick={() => handleDeleteExperience(exp.id)}
+                                onClick={() => handleDeleteExperience(expId)}
                                 disabled={loading}
                                 className="bg-red-500 hover:bg-red-600 text-white"
                               >
@@ -702,7 +707,8 @@ export default function AdminDashboard() {
                         </div>
                       )}
                     </div>
-                  ))}
+                    )
+                  })}
                 </div>
               )}
             </div>
@@ -781,17 +787,20 @@ export default function AdminDashboard() {
                 <p className="text-muted-foreground">No education entries yet.</p>
               ) : (
                 <div className="space-y-6">
-                  {education.map((edu) => (
-                    <div key={edu._id || edu.id} className="border border-border rounded-lg p-6 bg-secondary/50">
-                      {editingId === (edu._id || edu.id) ? (
+                  {education.map((edu) => {
+                    const eduId = getItemId(edu)
+
+                    return (
+                    <div key={eduId} className="border border-border rounded-lg p-6 bg-secondary/50">
+                      {editingId === eduId ? (
                         <div className="space-y-4">
                           <div>
                             <label className="block text-sm font-medium mb-2">Institution</label>
                             <Input
-                              value={edu.institution}
+                              value={edu.institution ?? ""}
                               onChange={(e) => {
                                 const updated = education.map((x) =>
-                                  x.id === edu.id ? { ...x, institution: e.target.value } : x
+                                  getItemId(x) === eduId ? { ...x, institution: e.target.value } : x
                                 )
                                 setEducation(updated)
                               }}
@@ -801,10 +810,10 @@ export default function AdminDashboard() {
                           <div>
                             <label className="block text-sm font-medium mb-2">Program</label>
                             <Input
-                              value={edu.program}
+                              value={edu.program ?? ""}
                               onChange={(e) => {
                                 const updated = education.map((x) =>
-                                  x.id === edu.id ? { ...x, program: e.target.value } : x
+                                  getItemId(x) === eduId ? { ...x, program: e.target.value } : x
                                 )
                                 setEducation(updated)
                               }}
@@ -814,10 +823,10 @@ export default function AdminDashboard() {
                           <div>
                             <label className="block text-sm font-medium mb-2">Specialization</label>
                             <Input
-                              value={edu.specialization}
+                              value={edu.specialization ?? ""}
                               onChange={(e) => {
                                 const updated = education.map((x) =>
-                                  x.id === edu.id ? { ...x, specialization: e.target.value } : x
+                                  getItemId(x) === eduId ? { ...x, specialization: e.target.value } : x
                                 )
                                 setEducation(updated)
                               }}
@@ -828,10 +837,10 @@ export default function AdminDashboard() {
                             <div>
                               <label className="block text-sm font-medium mb-2">Period</label>
                               <Input
-                                value={edu.period}
+                                value={edu.period ?? ""}
                                 onChange={(e) => {
                                   const updated = education.map((x) =>
-                                    x.id === edu.id ? { ...x, period: e.target.value } : x
+                                    getItemId(x) === eduId ? { ...x, period: e.target.value } : x
                                   )
                                   setEducation(updated)
                                 }}
@@ -840,10 +849,10 @@ export default function AdminDashboard() {
                             <div>
                               <label className="block text-sm font-medium mb-2">Status</label>
                               <Input
-                                value={edu.status}
+                                value={edu.status ?? ""}
                                 onChange={(e) => {
                                   const updated = education.map((x) =>
-                                    x.id === edu.id ? { ...x, status: e.target.value } : x
+                                    getItemId(x) === eduId ? { ...x, status: e.target.value } : x
                                   )
                                   setEducation(updated)
                                 }}
@@ -876,13 +885,13 @@ export default function AdminDashboard() {
                             </div>
                             <div className="flex gap-2">
                               <Button
-                                onClick={() => setEditingId(edu._id || edu.id)}
+                                onClick={() => setEditingId(eduId)}
                                 className="bg-accent hover:bg-accent/90 text-white"
                               >
                                 Edit
                               </Button>
                               <Button
-                                onClick={() => handleDeleteEducation(edu._id || edu.id)}
+                                onClick={() => handleDeleteEducation(eduId)}
                                 disabled={loading}
                                 className="bg-red-500 hover:bg-red-600 text-white"
                               >
@@ -895,7 +904,8 @@ export default function AdminDashboard() {
                         </div>
                       )}
                     </div>
-                  ))}
+                    )
+                  })}
                 </div>
               )}
             </div>
@@ -933,9 +943,12 @@ export default function AdminDashboard() {
                     <div>
                       <label className="block text-sm font-medium mb-2">Level</label>
                       <Input
+                        type="number"
+                        min={0}
+                        max={100}
                         value={newSkill.level}
-                        onChange={(e) => setNewSkill({ ...newSkill, level: e.target.value })}
-                        placeholder="e.g., Advanced"
+                        onChange={(e) => setNewSkill({ ...newSkill, level: Number(e.target.value) })}
+                        placeholder="e.g., 90"
                       />
                     </div>
                   </div>
@@ -954,17 +967,20 @@ export default function AdminDashboard() {
                 <p className="text-muted-foreground">No skills yet. Click "Add Skill" to add one.</p>
               ) : (
                 <div className="space-y-4">
-                  {skills.map((skill) => (
-                    <div key={skill.id} className="border border-border rounded-lg p-6 bg-secondary/50">
-                      {editingId === skill.id ? (
+                  {skills.map((skill) => {
+                    const skillId = getItemId(skill)
+
+                    return (
+                    <div key={skillId} className="border border-border rounded-lg p-6 bg-secondary/50">
+                      {editingId === skillId ? (
                         <div className="space-y-4">
                           <div>
                             <label className="block text-sm font-medium mb-2">Skill Name</label>
                             <Input
-                              value={skill.name}
+                              value={skill.name ?? ""}
                               onChange={(e) => {
                                 const updated = skills.map((s) =>
-                                  s.id === skill.id ? { ...s, name: e.target.value } : s
+                                  getItemId(s) === skillId ? { ...s, name: e.target.value } : s
                                 )
                                 setSkills(updated)
                               }}
@@ -976,10 +992,10 @@ export default function AdminDashboard() {
                             <div>
                               <label className="block text-sm font-medium mb-2">Category</label>
                               <Input
-                                value={skill.category}
+                                value={skill.category ?? ""}
                                 onChange={(e) => {
                                   const updated = skills.map((s) =>
-                                    s.id === skill.id ? { ...s, category: e.target.value } : s
+                                    getItemId(s) === skillId ? { ...s, category: e.target.value } : s
                                   )
                                   setSkills(updated)
                                 }}
@@ -989,14 +1005,17 @@ export default function AdminDashboard() {
                             <div>
                               <label className="block text-sm font-medium mb-2">Level</label>
                               <Input
-                                value={skill.level}
+                                type="number"
+                                min={0}
+                                max={100}
+                                value={skill.level ?? 0}
                                 onChange={(e) => {
                                   const updated = skills.map((s) =>
-                                    s.id === skill.id ? { ...s, level: e.target.value } : s
+                                    getItemId(s) === skillId ? { ...s, level: Number(e.target.value) } : s
                                   )
                                   setSkills(updated)
                                 }}
-                                placeholder="e.g., Advanced"
+                                placeholder="e.g., 90"
                               />
                             </div>
                           </div>
@@ -1021,17 +1040,17 @@ export default function AdminDashboard() {
                         <div className="flex justify-between items-center">
                           <div>
                             <p className="font-medium text-foreground text-lg">{skill.name}</p>
-                            <p className="text-sm text-muted-foreground">{skill.category} • {skill.level}</p>
+                            <p className="text-sm text-muted-foreground">{skill.category} - {skill.level}%</p>
                           </div>
                           <div className="flex gap-2">
                             <Button
-                              onClick={() => setEditingId(skill.id)}
+                              onClick={() => setEditingId(skillId)}
                               className="bg-accent hover:bg-accent/90 text-white"
                             >
                               Edit
                             </Button>
                             <Button
-                              onClick={() => handleDeleteSkill(skill.id)}
+                              onClick={() => handleDeleteSkill(skillId)}
                               disabled={loading}
                               className="bg-red-500 hover:bg-red-600 text-white"
                             >
@@ -1041,7 +1060,8 @@ export default function AdminDashboard() {
                         </div>
                       )}
                     </div>
-                  ))}
+                    )
+                  })}
                 </div>
               )}
             </div>

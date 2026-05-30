@@ -3,15 +3,17 @@ import mongoose from "mongoose"
 
 const ExperienceSchema = new mongoose.Schema(
   {
+    title: String,
     company: String,
-    role: String,
-    startDate: String,
-    endDate: String,
-    description: String,
-    technologies: [String],
+    location: String,
+    duration: String,
+    description: [String],
   },
   { timestamps: true }
 )
 
-export default mongoose.models.Experience ||
-  mongoose.model("Experience", ExperienceSchema)
+if (mongoose.models.Experience) {
+  delete mongoose.models.Experience
+}
+
+export default mongoose.model("Experience", ExperienceSchema)

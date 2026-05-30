@@ -42,7 +42,7 @@ export function EducationSection() {
             const IconComponent = item.status === "Current" ? GraduationCap : Award
             return (
               <div
-                key={item.id}
+                key={(item as any)._id || item.id}
                 className="bg-card p-8 border border-border hover:border-accent hover:shadow-lg transition-all group"
               >
                 <div className="flex items-start gap-4">

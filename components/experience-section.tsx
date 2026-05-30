@@ -33,7 +33,7 @@ export function ExperienceSection() {
 
         <div className="relative pl-8 border-l-2 border-accent/30 space-y-12">
           {experiences.map((exp) => (
-            <div key={exp.id} className="relative">
+            <div key={(exp as any)._id || exp.id} className="relative">
               {/* Timeline dot */}
               <div className="absolute -left-[41px] top-0 w-4 h-4 bg-accent rounded-full border-4 border-background" />
 
@@ -56,7 +56,7 @@ export function ExperienceSection() {
                 <h3 className="text-xl font-bold text-foreground mb-4">{exp.title}</h3>
 
                 <ul className="space-y-2">
-                  {exp.description.map((item, i) => (
+                  {(Array.isArray(exp.description) ? exp.description : []).map((item, i) => (
                     <li key={i} className="flex items-start gap-3 text-muted-foreground">
                       <span className="text-accent mt-1.5 w-1.5 h-1.5 bg-accent rounded-full flex-shrink-0" />
                       {item}

@@ -1,19 +1,32 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import { connectDB } from "../../../lib/mongodb";
-import Project from "../../models/Project";
+import { NextRequest, NextResponse } from "next/server";
+import { connectDB, isMongoConfigured } from "@/lib/mongodb";
+import { getProjects } from "@/lib/portfolio-data";
+import Project from "@/app/models/Project";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  await connectDB();
+export async function GET() {
+  const fallback = await getProjects();
 
-  if (req.method === "GET") {
-    const projects = await Project.find();
-    return res.status(200).json(projects);
+  if (!isMongoConfigured()) {
+    return NextResponse.json(fallback);
   }
 
-  if (req.method === "POST") {
-    const newProject = await Project.create(req.body);
-    return res.status(201).json(newProject);
+  try {
+    await connectDB();
+    const projects = await Project.find().lean();
+    return NextResponse.json(projects.length > 0 ? projects : fallback);
+  } catch (error) {
+    console.error("GET /api/projects failed, using fallback data:", error);
+    return NextResponse.json(fallback);
   }
+}
 
-  res.status(405).json({ message: "Method not allowed" });
+export async function POST(req: NextRequest) {
+  try {
+    await connectDB();
+    const project = await Project.create(await req.json());
+    return NextResponse.json(project, { status: 201 });
+  } catch (error) {
+    console.error("POST /api/projects failed:", error);
+    return NextResponse.json({ error: "Database is not available" }, { status: 503 });
+  }
 }

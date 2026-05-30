@@ -39,9 +39,10 @@ export interface Education {
 
 export interface Skill {
   id: string
+  _id?: string
   name: string
   category: string
-  level: "Beginner" | "Intermediate" | "Advanced" | "Expert"
+  level: number
 }
 
 export interface Project {

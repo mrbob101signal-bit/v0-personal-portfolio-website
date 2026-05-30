@@ -1,18 +1,18 @@
 {
   "about": {
-    "name": "OEUN Chhinh",
+    "name": "Chhinh OEUN",
     "title": "Web Designer & IT Student",
     "bio": "a Web Designer & IT Student",
-    "detailedBio": "I am a dedicated 3rd-year IT student at The University of Cambodia, originally from Tbong Khmum Province. My journey in technology began at ETEC Institute, where I studied C, C++, and Web Design, building a strong foundation for my career.",
+    "detailedBio": "I am a dedicated 4th-year IT student at The University of Cambodia, originally from Tbong Khmum Province. My journey in technology began at ETEC Institute, where I studied C, C++, and Web Design, building a strong foundation for my career.",
     "additionalInfo": "With over a year of experience at DDD company and 3 months as an IT Support Intern at UC, I have developed practical skills in both technical support and professional collaboration. My career objective is to excel in Web Design, PHP, Laravel, and Java development.",
     "email": "oeunchhinh@gmail.com",
-    "phone": "089649779",
-    "location": "Tbong Khmum, Cambodia",
+    "phone": "0884395053",
+    "location": "Phnom Penh, Cambodia",
     "image": "/chhinh.png",
     "highlights": [
       {
         "icon": "GraduationCap",
-        "value": "Year 3",
+        "value": "Year 4",
         "label": "IT Student at UC"
       },
       {
@@ -106,67 +106,67 @@
       "id": "1",
       "name": "JavaScript",
       "category": "Frontend",
-      "level": "Advanced"
+      "level": 75
     },
     {
       "id": "2",
       "name": "React",
       "category": "Frontend",
-      "level": "Advanced"
+      "level": 75
     },
     {
       "id": "3",
       "name": "TypeScript",
       "category": "Frontend",
-      "level": "Intermediate"
+      "level": 75
     },
     {
       "id": "4",
       "name": "Next.js",
       "category": "Frontend",
-      "level": "Advanced"
+      "level": 67
     },
     {
       "id": "5",
       "name": "PHP",
       "category": "Backend",
-      "level": "Intermediate"
+      "level": 75
     },
     {
       "id": "6",
       "name": "Laravel",
       "category": "Backend",
-      "level": "Intermediate"
+      "level": 75
     },
     {
       "id": "7",
       "name": "Java",
       "category": "Backend",
-      "level": "Beginner"
+      "level": 70
     },
     {
       "id": "8",
       "name": "C++",
       "category": "Programming",
-      "level": "Intermediate"
+      "level": 75
     },
     {
       "id": "9",
       "name": "MySQL",
       "category": "Database",
-      "level": "Intermediate"
+      "level": 75
     },
     {
       "id": "10",
       "name": "Tailwind CSS",
       "category": "Frontend",
-      "level": "Advanced"
+      "level": 90
     },
     {
       "id": "1768353833788",
       "name": "Python",
       "category": "backend",
-      "level": "Intermediate"
+      "level": 75
     }
   ],
   "projects": [

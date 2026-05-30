@@ -27,8 +27,8 @@ export default function LoginPage() {
       }
 
       // Demo credentials
-      const adminEmail = "admin@portfolio.com"
-      const adminPassword = "admin123"
+      const adminEmail = "mrbob101signal@gmail.com"
+      const adminPassword = "Ch@3669*"
       const userEmail = "user@portfolio.com"
       const userPassword = "user123"
 
